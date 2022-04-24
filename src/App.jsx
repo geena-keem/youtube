@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import styles from './app.module.css';
 import SearchHeader from './components/search_header/search_header';
 import VideoDetail from './components/video_detail/video_detail';
@@ -8,26 +8,27 @@ function App({ youtube }) {
     const [videos, setVideos] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
 
-    const selectVideo = (video) => {
+    const selectVideo = useCallback((video) => {
         setSelectedVideo(video);
-    };
+    }, []);
 
-    const search = (query) => {
-        setSelectedVideo(null);
-        youtube
-            .search(query) //
-            .then((videos) => {
-                setVideos(videos);
-            });
-    };
+    const search = useCallback(
+        (query) => {
+            setSelectedVideo(null);
+            youtube
+                .search(query) //
+                .then((videos) => {
+                    setVideos(videos);
+                });
+        },
+        [youtube]
+    );
 
     useEffect(() => {
         youtube
             .mostPopular() //
             .then((videos) => setVideos(videos));
-    }, []);
-
-    console.log(selectedVideo);
+    }, [youtube]);
 
     return (
         <div className={styles.app}>
