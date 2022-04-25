@@ -5,8 +5,6 @@ const VideoItem = memo(
     ({ video, video: { snippet }, onVideoClick, display }) => {
         const displayType = display === 'list' ? styles.list : styles.grid;
 
-        console.log('item');
-
         return (
             <li
                 className={`${styles.container} ${displayType}`}
